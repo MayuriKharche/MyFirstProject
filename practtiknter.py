@@ -1,22 +1,56 @@
-import tkinter
-root=tkinter.Tk()
-l3=tkinter.Label(root,text="Login Page")
-l3.pack
-l1=tkinter.Label(root,text="Usename:-")
+from tkinter import *
+from tkinter import messagebox
+import mysql.connector
+          
+root=Tk()                               
+root.title("LOGIN ")                
+root.geometry('1200x1000')
+
+def valid_digit(inp):                                       
+    if inp.isdigit():
+        return True
+    elif inp=='':
+        return True
+    else:
+        return False
+    return
+
+reg1 = root.register(valid_digit)
+
+l=Label(root,text="LOGIN")
+l.pack
+l1=Label(root,text="Username :")
 l1.pack()
-e1=tkinter.Entry(root)
-e1.pack()
-l2=tkinter.Label(root,text="password:-")
+l2=Label(root,text="UPI PIN :")
 l2.pack()
-e2=tkinter.Entry(root)
+
+e1=Entry(root)
+e1.pack()
+e1.config(validate = "key", validatecommand = (reg1,'%P'))
+e2=Entry(root)
 e2.pack()
-b1=tkinter.Button(root,text="login", fg="blue", command="login")
+
+b1=Button(root,text="login", fg="blue", command="Login")
 b1.pack()
+b2=Button(root,text="cancel", fg="blue", command="Cancel")
+b2.pack()
+
+l.place(x=595,y=265)
 l1.place(x=500,y=300)
 e1.place(x=600,y=300)
 l2.place(x=500,y=330)
 e2.place(x=600,y=330)
-b1.place(x=580,y=360)
-l3.place(x=550,y=280)
+b1.place(x=560,y=360)
+b2.place(x=640,y=360)
+
+ac = e1.get()
+pin = e2.get()
+
+conn = mysql.connector.connect(host="localhost",username="root",passwd="root",database="banking")
+cursor = conn.cursor()
+res = cursor.execute("SELECT EXISTS(SELECT * from account_details WHERE AccNo %d)" %int(ac))
+
+conn.commit()
+print(res)
 
 root.mainloop()
