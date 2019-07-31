@@ -48,9 +48,6 @@ pin = e2.get()
 
 conn = mysql.connector.connect(host="localhost",username="root",passwd="root",database="banking")
 cursor = conn.cursor()
-res = cursor.execute("SELECT EXISTS(SELECT * from account_details WHERE AccNo %d)" %int(ac))
-
 conn.commit()
-print(res)
 
 root.mainloop()
